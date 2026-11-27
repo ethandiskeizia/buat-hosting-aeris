@@ -1,0 +1,278 @@
+{
+  "info": {
+    "name": "AERIS 2.1 - Smart Campus Facility REST API",
+    "_postman_id": "aeris-v2-collection-001",
+    "description": "Comprehensive Postman collection for AERIS 2.1 Facility Operations, Environmental Radar, QR code workflow, and Gamification API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000/api/v1" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"student\",\n  \"password\": \"password\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Authenticated User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Register New Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"kevin_jonathan\",\n  \"password\": \"umnSecure2026\",\n  \"name\": \"Kevin Jonathan\",\n  \"role\": \"student\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. User Profile & Avatar",
+      "item": [
+        {
+          "name": "Get Current Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/profile", "host": ["{{baseUrl}}"], "path": ["profile"] }
+          }
+        },
+        {
+          "name": "Upload Avatar",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/profile/avatar", "host": ["{{baseUrl}}"], "path": ["profile", "avatar"] }
+          }
+        },
+        {
+          "name": "Remove Avatar",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/profile/avatar", "host": ["{{baseUrl}}"], "path": ["profile", "avatar"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Achievements & Gamification",
+      "item": [
+        {
+          "name": "Get Master Achievements",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/achievements", "host": ["{{baseUrl}}"], "path": ["achievements"] }
+          }
+        },
+        {
+          "name": "Get My Unlocked Achievements",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/achievements/my", "host": ["{{baseUrl}}"], "path": ["achievements", "my"] }
+          }
+        },
+        {
+          "name": "Get Achievement Progress",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/achievements/progress", "host": ["{{baseUrl}}"], "path": ["achievements", "progress"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Notifications",
+      "item": [
+        {
+          "name": "List User Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/notifications", "host": ["{{baseUrl}}"], "path": ["notifications"] }
+          }
+        },
+        {
+          "name": "Mark All Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/notifications/read-all", "host": ["{{baseUrl}}"], "path": ["notifications", "read-all"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Locations & Environmental Radar",
+      "item": [
+        {
+          "name": "List Locations",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/locations", "host": ["{{baseUrl}}"], "path": ["locations"] }
+          }
+        },
+        {
+          "name": "Get Single Location Detail",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/locations/lib2", "host": ["{{baseUrl}}"], "path": ["locations", "lib2"] }
+          }
+        },
+        {
+          "name": "Get Campus Radar Summary",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/environment/radar", "host": ["{{baseUrl}}"], "path": ["environment", "radar"] }
+          }
+        },
+        {
+          "name": "Submit Thermal Comfort Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": \"lib2\",\n  \"rating\": \"comfortable\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/environment/feedback", "host": ["{{baseUrl}}"], "path": ["environment", "feedback"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Facility Reports & Verifications",
+      "item": [
+        {
+          "name": "List Reports",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/reports", "host": ["{{baseUrl}}"], "path": ["reports"] }
+          }
+        },
+        {
+          "name": "Submit Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": \"A101\",\n  \"category\": \"Audio-Visual\",\n  \"issue\": \"Microphone feedback loop\",\n  \"description\": \"Podium mic produces loud screeching sound when turned on.\",\n  \"priority\": \"HIGH\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/reports", "host": ["{{baseUrl}}"], "path": ["reports"] }
+          }
+        },
+        {
+          "name": "Verify Report (Still Exists / Fixed)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"response\": \"still_exists\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/reports/#R-101/verify", "host": ["{{baseUrl}}"], "path": ["reports", "#R-101", "verify"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. QR Codes & Maintenance",
+      "item": [
+        {
+          "name": "List QR Placards",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/qr-codes", "host": ["{{baseUrl}}"], "path": ["qr-codes"] }
+          }
+        },
+        {
+          "name": "Toggle QR Active Status",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{baseUrl}}/qr-codes/lib2/toggle", "host": ["{{baseUrl}}"], "path": ["qr-codes", "lib2", "toggle"] }
+          }
+        },
+        {
+          "name": "Get Maintenance Operations",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/maintenance", "host": ["{{baseUrl}}"], "path": ["maintenance"] }
+          }
+        },
+        {
+          "name": "Get Admin KPI Dashboard",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/admin/dashboard", "host": ["{{baseUrl}}"], "path": ["admin", "dashboard"] }
+          }
+        }
+      ]
+    }
+  ]
+}

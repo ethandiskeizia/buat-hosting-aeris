@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AERIS — Campus Facility & Environmental Intelligence</title>
+    <meta name="description" content="AERIS transforms Universitas Multimedia Nusantara into a smart, responsive campus. Scan room QR codes, check real-time air quality, verify issues, and track facility maintenance live.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <script src="js/theme.js"></script>
+    <style>
+        /* Landing Page Specific Styles */
+        html { scroll-behavior: smooth; }
+        .landing-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(217, 222, 250, 0.6);
+        }
+        .landing-nav-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .brand-mascot-sm {
+            width: 32px;
+            height: 32px;
+        }
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            letter-spacing: 1px;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+        .nav-menu a {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--text-body);
+            transition: var(--transition);
+        }
+        .nav-menu a:hover {
+            color: var(--primary-blue);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Hero Section */
+        .landing-hero {
+            padding: 70px 24px 60px;
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 48px;
+            align-items: center;
+        }
+        .hero-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(127, 143, 243, 0.12);
+            color: var(--primary-blue);
+            border: 1px solid var(--soft-lavender);
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 0.8125rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.02em;
+        }
+        .hero-badge-pill .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--status-optimal);
+            box-shadow: 0 0 0 3px rgba(95, 203, 130, 0.3);
+            animation: pulseDot 2s infinite;
+        }
+        @keyframes pulseDot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(95, 203, 130, 0.6); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(95, 203, 130, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(95, 203, 130, 0); }
+        }
+        .hero-title {
+            font-size: 3.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.12;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        .hero-title span.highlight {
+            color: var(--primary-blue);
+            background: linear-gradient(135deg, var(--primary-blue), #5E6FE0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-body);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            max-width: 560px;
+        }
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+        .hero-metrics-strip {
+            display: flex;
+            gap: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--soft-lavender);
+        }
+        .h-metric {
+            display: flex;
+            flex-direction: column;
+        }
+        .h-metric-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+        .h-metric-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Hero Visual Stage */
+        .hero-stage {
+            position: relative;
+            background: linear-gradient(145deg, var(--white), var(--soft-lavender));
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(217, 222, 250, 0.8);
+            min-height: 440px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+        .stage-mascot-center {
+            width: 140px;
+            height: 140px;
+            margin: 20px auto;
+            position: relative;
+            z-index: 2;
+        }
+        .floating-card-metric {
+            position: absolute;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--soft-lavender);
+            font-size: 0.8125rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 3;
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+        .floating-card-1 { top: 24px; left: 20px; }
+        .floating-card-2 { bottom: 30px; right: 24px; animation-delay: -3s; }
+        .floating-card-3 { top: 40px; right: 20px; animation-delay: -1.5s; }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .f-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--soft-lavender);
+            display: grid;
+            place-items: center;
+            font-size: 1rem;
+        }
+        .stage-room-preview {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            border: 1px solid var(--soft-lavender);
+            box-shadow: var(--shadow-sm);
+            margin-top: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Section Container */
+        .landing-section {
+            padding: 80px 24px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+        .section-tag {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .section-heading {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.2;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+        .section-desc {
+            font-size: 1.0625rem;
+            color: var(--text-body);
+            max-width: 680px;
+            line-height: 1.6;
+            margin-bottom: 48px;
+        }
+        .text-center { text-align: center; margin-left: auto; margin-right: auto; }
+
+        /* Problem & Solution Cards (About) */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .about-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 32px 28px;
+            border: 1px solid var(--soft-lavender);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-blue);
+        }
+        .about-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, rgba(127,143,243,0.15), rgba(120,185,232,0.25));
+            color: var(--primary-blue);
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .about-card h3 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+        .about-card p {
+            color: var(--text-body);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Features Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            border: 1px solid var(--soft-lavender);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-blue);
+        }
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .feature-badge {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: var(--radius-pill);
+            background: rgba(95, 203, 130, 0.15);
+            color: var(--status-optimal);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .feature-card h4 {
+            font-size: 1.125rem;
+            color: var(--text-main);
+            margin: 0;
+        }
+        .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-body);
+            line-height: 1.55;
+            margin-bottom: 16px;
+        }
+        .feature-preview {
+            background: var(--bg-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font-size: 0.8125rem;
+            border: 1px solid rgba(217, 222, 250, 0.5);
+            color: var(--text-main);
+        }
+
+        /* How it works */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            position: relative;
+        }
+        .step-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 24px 20px;
+            border: 1px solid var(--soft-lavender);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .step-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-md);
+        }
+        .step-number {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1.125rem;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 4px 10px rgba(127, 143, 243, 0.35);
+        }
+        .step-card h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        .step-card p {
+            font-size: 0.8125rem;
+            color: var(--text-body);
+            line-height: 1.5;
+        }
+
+        /* Live Room Catalog Preview */
+        .catalog-filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .catalog-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .room-catalog-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--soft-lavender);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .room-catalog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-blue);
+        }
+        .rc-img {
+            height: 150px;
+            position: relative;
+            background: var(--soft-lavender);
+        }
+        .rc-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .rc-health-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .rc-qr-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--deep-navy);
+            font-size: 0.6875rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: var(--radius-pill);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .rc-body {
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .rc-name {
+            font-size: 1.0625rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+        .rc-sub {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .rc-metrics {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8125rem;
+            color: var(--text-body);
+            margin-bottom: 16px;
+        }
+        .rc-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--soft-lavender);
+        }
+
+        /* Stakeholder Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .benefit-col {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 28px 22px;
+            border: 1px solid var(--soft-lavender);
+            box-shadow: var(--shadow-sm);
+        }
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .benefit-col h4 {
+            font-size: 1.125rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+        .benefit-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .benefit-col li {
+            font-size: 0.875rem;
+            color: var(--text-body);
+            margin-bottom: 10px;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 18px;
+        }
+        .benefit-col li::before {
+            content: "✓";
+            color: var(--status-optimal);
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Final CTA */
+        .landing-final-cta {
+            background: linear-gradient(135deg, var(--white), var(--soft-lavender));
+            border-radius: var(--radius-lg);
+            padding: 56px 40px;
+            border: 1px solid var(--soft-lavender);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            margin: 40px auto 80px;
+            max-width: 1000px;
+            position: relative;
+        }
+        .final-cta-mascot {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+        }
+
+        /* QR Modal & Scanner Simulator */
+        .qr-lookup-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--soft-lavender);
+            border-radius: var(--radius-sm);
+            font-size: 1.125rem;
+            font-family: inherit;
+            color: var(--text-main);
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            transition: var(--transition);
+        }
+        .qr-lookup-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(127, 143, 243, 0.2);
+        }
+        .qr-demo-rooms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 14px;
+        }
+        .qr-demo-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--soft-lavender);
+            border-radius: var(--radius-pill);
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .qr-demo-btn:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            border-color: var(--primary-blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .landing-hero { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .steps-container { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2.35rem; }
+            .hero-metrics-strip { flex-wrap: wrap; gap: 16px; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .nav-menu { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="landing-nav">
+        <div class="landing-nav-container">
+            <div class="brand-link" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                <div class="brand-mascot-sm" id="nav-mascot"></div>
+                <span class="brand-name">AERIS</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#rooms-catalog">Live Directory</a>
+                <a href="#benefits">Benefits</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button type="button" id="global-audio-toggle" class="audio-toggle-pill" onclick="toggleBackgroundAudio()" title="Toggle calming campus ambient audio" style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-color); border:1px solid var(--soft-lavender); padding:6px 12px; border-radius:99px; font-size:0.8125rem; font-weight:600; color:var(--text-body); cursor:pointer; transition:var(--transition);">
+                    <span>🎵</span> Sound: <span id="global-audio-state" style="font-weight:700; color:var(--text-muted);">OFF</span>
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="openQrScanModal()">📷 Scan QR</button>
+                <button class="btn btn-primary btn-sm" onclick="window.location.href='login.html'">Sign In / Register</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="landing-hero">
+        <div class="hero-left">
+            <div class="hero-badge-pill">
+                <span class="pulse-dot"></span>
+                Universitas Multimedia Nusantara Facility Platform
+            </div>
+            <h1 class="hero-title">
+                Next-Gen Campus <span class="highlight">Facility &amp; Comfort</span> Intelligence.
+            </h1>
+            <p class="hero-subtitle">
+                AERIS integrates IoT environmental sensors, QR-based room reporting, and community-driven verification into a unified platform for students, faculty, and maintenance staff.
+            </p>
+            <div class="hero-cta-group">
+                <button class="btn btn-primary" onclick="document.getElementById('rooms-catalog').scrollIntoView({behavior:'smooth'})">
+                    Explore Campus Spaces
+                </button>
+                <button class="btn btn-secondary" onclick="openQrScanModal()">
+                    📷 Scan Room QR Code
+                </button>
+            </div>
+            <div class="hero-metrics-strip">
+                <div class="h-metric">
+                    <span class="h-metric-val" id="kpi-rooms">8+</span>
+                    <span class="h-metric-lbl">Active Zones</span>
+                </div>
+                <div class="h-metric">
+                    <span class="h-metric-val" id="kpi-score">98%</span>
+                    <span class="h-metric-lbl">Optimal Peak IEQ</span>
+                </div>
+                <div class="h-metric">
+                    <span class="h-metric-val" id="kpi-reports">Real-Time</span>
+                    <span class="h-metric-lbl">Telemetry Sync</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Visual Stage -->
+        <div class="hero-stage">
+            <!-- Floating cards representing live sensor readings -->
+            <div class="floating-card-metric floating-card-1">
+                <div class="f-icon">🌬️</div>
+                <div>
+                    <div style="font-weight:700; color:var(--text-main);">Library Floor 2</div>
+                    <div style="color:var(--status-optimal); font-weight:600; font-size:0.75rem;">Optimal 98% · 23.1°C</div>
+                </div>
+            </div>
+
+            <div class="floating-card-metric floating-card-3">
+                <div class="f-icon">📷</div>
+                <div>
+                    <div style="font-weight:700; color:var(--text-main);">QR Room Tag</div>
+                    <div style="color:var(--primary-blue); font-size:0.75rem;">Scan to report issue</div>
+                </div>
+            </div>
+
+            <div class="stage-mascot-center" id="hero-mascot"></div>
+
+            <div class="floating-card-metric floating-card-2">
+                <div class="f-icon">✅</div>
+                <div>
+                    <div style="font-weight:700; color:var(--text-main);">Smart Verification</div>
+                    <div style="color:var(--text-muted); font-size:0.75rem;">4 students verified issue</div>
+                </div>
+            </div>
+
+            <div class="stage-room-preview">
+                <div class="flex-between">
+                    <div>
+                        <strong style="color:var(--text-main); font-size:0.9375rem;">Smart Classroom A101</strong>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Academic Building · Floor 1</div>
+                    </div>
+                    <span class="status-badge status-optimal">Health: GOOD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="landing-section" id="about" style="background: var(--bg-color);">
+        <div class="text-center">
+            <span class="section-tag">About The Platform</span>
+            <h2 class="section-heading">Built to Solve Real Campus Challenges</h2>
+            <p class="section-desc text-center">
+                Campus facilities degrade silently: broken projectors delay lectures, leaking air conditioning damages desks, and stuffy air impairs learning. AERIS fixes this with transparency and speed.
+            </p>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <div class="about-icon">📡</div>
+                <h3>Real-Time Environmental Telemetry</h3>
+                <p>Monitors Temperature, Humidity, CO2 levels, and Occupancy across campus study halls and lecture rooms to ensure healthy learning conditions.</p>
+            </div>
+            <div class="about-card">
+                <div class="about-icon">⚡</div>
+                <h3>QR-Based Instant Reporting</h3>
+                <p>Every room has a physical QR code. Anyone in the room can scan it and file a categorized report with photo evidence in under 30 seconds.</p>
+            </div>
+            <div class="about-card">
+                <div class="about-icon">🤝</div>
+                <h3>Crowdsourced Verification</h3>
+                <p>Inspired by smart mapping systems: when another student enters a room, AERIS prompts them to verify whether a reported problem is still active.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Overview -->
+    <section class="landing-section" id="features">
+        <div class="text-center">
+            <span class="section-tag">Platform Capabilities</span>
+            <h2 class="section-heading">Everything Facility Ops &amp; Students Need</h2>
+            <p class="section-desc text-center">
+                A connected ecosystem bridging campus occupants with facility engineers for seamless maintenance and comfort.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-header">
+                    <span class="feature-badge">Module 01</span>
+                    <h4>QR Room Reporting</h4>
+                </div>
+                <p>Room-specific reporting forms pre-filled with location and relevant equipment categories (Classrooms, Labs, Lounges).</p>
+                <div class="feature-preview">🏷️ Unique QR Placard per classroom &amp; laboratory</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <span class="feature-badge">Module 02</span>
+                    <h4>Smart Facility Verification</h4>
+                </div>
+                <p>Crowdsourced confirmations from campus occupants validate whether reported issues persist or have been fixed.</p>
+                <div class="feature-preview">💡 "Is the AC in this room still leaking? [Yes] [Fixed]"</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <span class="feature-badge">Module 03</span>
+                    <h4>Dynamic Facility Health</h4>
+                </div>
+                <p>Rooms automatically display real-time condition indicators: Good, Needs Attention, Critical, or Under Maintenance.</p>
+                <div class="feature-preview">🟢 GOOD &nbsp; 🟡 ATTENTION &nbsp; 🔴 CRITICAL</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <span class="feature-badge">Module 04</span>
+                    <h4>Maintenance History &amp; Timelines</h4>
+                </div>
+                <p>Complete historical logs preserve every report, verification response, technician dispatch, and resolution.</p>
+                <div class="feature-preview">⏱️ Step-by-step visual audit trail for every room</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <span class="feature-badge">Module 05</span>
+                    <h4>Recurring Issue Detection</h4>
+                </div>
+                <p>Automated intelligence flags rooms that repeatedly suffer the same equipment failures in the last 30 days.</p>
+                <div class="feature-preview">⚠️ "Alert: 3 HVAC reports in Gedung D Lounge this month"</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <span class="feature-badge">Module 06</span>
+                    <h4>Interactive 3D Campus Twin</h4>
+                </div>
+                <p>Explore Universitas Multimedia Nusantara campus in interactive 3D, inspect zone conditions, and view active alerts.</p>
+                <div class="feature-preview">🏢 Orbit, zoom, and inspect campus spatial micro-climates</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="landing-section" id="how-it-works" style="background: var(--bg-color);">
+        <div class="text-center">
+            <span class="section-tag">User Workflow</span>
+            <h2 class="section-heading">How AERIS Works In 5 Simple Steps</h2>
+            <p class="section-desc text-center">
+                From finding an issue to official resolution: a frictionless experience for students and staff.
+            </p>
+        </div>
+
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h4>Scan Room QR</h4>
+                <p>Locate the physical QR code placard at any room entrance or desk and scan with your camera.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h4>Access Live Status</h4>
+                <p>View the room's real-time air quality, comfort score, active equipment list, and current health.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h4>Report An Issue</h4>
+                <p>Select relevant issue category, attach optional photo evidence, specify urgency, and submit.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h4>Crowd Verification</h4>
+                <p>Other room visitors confirm if the issue persists, giving facility managers verified consensus.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h4>Resolution &amp; Log</h4>
+                <p>Admins dispatch technicians, mark progress, and close the issue into the room's permanent history.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Interactive Campus Room Directory -->
+    <section class="landing-section" id="rooms-catalog">
+        <div class="text-center">
+            <span class="section-tag">Live Campus Directory</span>
+            <h2 class="section-heading">Explore Campus Spaces Before Signing In</h2>
+            <p class="section-desc text-center">
+                Browse real rooms across Universitas Multimedia Nusantara, check their live environmental telemetry, and test QR access.
+            </p>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="catalog-filter-bar">
+            <div class="catalog-chips">
+                <button class="chip selected" onclick="filterCatalog('All', this)">All Buildings</button>
+                <button class="chip" onclick="filterCatalog('Library', this)">Library</button>
+                <button class="chip" onclick="filterCatalog('Academic', this)">Academic</button>
+                <button class="chip" onclick="filterCatalog('Gedung B', this)">Gedung B</button>
+                <button class="chip" onclick="filterCatalog('Gedung D', this)">Gedung D</button>
+                <button class="chip" onclick="filterCatalog('Student Center', this)">Student Center</button>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="openQrScanModal()">📷 Enter Room Code</button>
+        </div>
+
+        <!-- Grid of Rooms -->
+        <div class="catalog-grid" id="catalog-rooms-container">
+            <!-- Dynamically populated via JS -->
+        </div>
+    </section>
+
+    <!-- Stakeholder Benefits -->
+    <section class="landing-section" id="benefits" style="background: var(--bg-color);">
+        <div class="text-center">
+            <span class="section-tag">Benefits</span>
+            <h2 class="section-heading">Designed for the Entire Campus Community</h2>
+            <p class="section-desc text-center">
+                A unified platform delivering tailored advantages across all campus roles.
+            </p>
+        </div>
+
+        <div class="benefits-grid">
+            <div class="benefit-col">
+                <div class="benefit-icon">🎓</div>
+                <h4>Students &amp; Visitors</h4>
+                <ul>
+                    <li>Find optimal, quiet study spots with fresh air and power outlets.</li>
+                    <li>One-tap reporting without long paper complaint procedures.</li>
+                    <li>Track status of submitted reports in real-time.</li>
+                </ul>
+            </div>
+
+            <div class="benefit-col">
+                <div class="benefit-icon">👨‍🏫</div>
+                <h4>Faculty &amp; Users</h4>
+                <ul>
+                    <li>Know in advance if a classroom projector or AC is undergoing repair.</li>
+                    <li>Verify classroom readiness before lectures start.</li>
+                    <li>Fast priority escalation for urgent teaching equipment.</li>
+                </ul>
+            </div>
+
+            <div class="benefit-col">
+                <div class="benefit-icon">🛠️</div>
+                <h4>Maintenance Teams</h4>
+                <ul>
+                    <li>Clear issue descriptions with attached photos.</li>
+                    <li>Prioritized work orders (Low, Medium, High, Critical).</li>
+                    <li>Direct access to equipment location and history.</li>
+                </ul>
+            </div>
+
+            <div class="benefit-col">
+                <div class="benefit-icon">📊</div>
+                <h4>Facility Administrators</h4>
+                <ul>
+                    <li>Complete visibility of campus room health indicators.</li>
+                    <li>Crowdsourced verification eliminates false alarms.</li>
+                    <li>Recurring issue detection prevents repetitive component breakdown.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Call to Action -->
+    <section class="landing-section">
+        <div class="landing-final-cta">
+            <div class="final-cta-mascot" id="cta-mascot"></div>
+            <h2 style="font-size: 2rem; color: var(--text-main); margin-bottom: 12px;">Ready to Experience Smart Campus Living?</h2>
+            <p style="color: var(--text-body); max-width: 600px; margin: 0 auto 28px; line-height: 1.6;">
+                Sign in with your student credentials or administrative account to start monitoring, reporting, and improving campus spaces today.
+            </p>
+            <div class="flex-row" style="justify-content: center; gap: 14px; width: auto; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='login.html'">Get Started / Sign In</button>
+                <button class="btn btn-secondary" onclick="openQrScanModal()">Test Room QR Simulation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive QR Code Simulator Modal -->
+    <div id="qr-scan-modal" class="modal-overlay hidden">
+        <div class="modal-content centered-modal" style="max-width: 480px;">
+            <button class="close-btn" onclick="closeQrScanModal()">×</button>
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">📷</div>
+            <h3 style="margin-bottom: 6px;">Room QR Code Scanner</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 20px;">
+                Enter a room code or select one of the registered campus rooms below to simulate scanning a physical door QR code.
+            </p>
+            
+            <form onsubmit="event.preventDefault(); submitQrLookup();">
+                <input type="text" id="qr-code-input" class="qr-lookup-input" placeholder="e.g. A101, LIB-F2, SC-L1" required autocomplete="off">
+                <button type="submit" class="btn btn-primary full-width">Scan / Open Room Portal</button>
+            </form>
+
+            <div style="margin-top: 20px;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Quick Demo Rooms:</div>
+                <div class="qr-demo-rooms">
+                    <button type="button" class="qr-demo-btn" onclick="fillQrDemo('A101')">Smart Classroom A101</button>
+                    <button type="button" class="qr-demo-btn" onclick="fillQrDemo('lib2')">Library Fl 2</button>
+                    <button type="button" class="qr-demo-btn" onclick="fillQrDemo('gedungD')">Gedung D Lounge</button>
+                    <button type="button" class="qr-demo-btn" onclick="fillQrDemo('B201')">Multimedia Lab B201</button>
+                    <button type="button" class="qr-demo-btn" onclick="fillQrDemo('lounge')">Student Lounge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="aeris-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo-text">AERIS</div>
+                <p>Campus Facility &amp; Environmental Intelligence Platform.</p>
+                <div class="footer-mascot" id="footer-mascot"></div>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>PLATFORM</h4>
+                    <a href="#about">About AERIS</a>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#rooms-catalog">Live Directory</a>
+                </div>
+                <div class="footer-col">
+                    <h4>PORTALS</h4>
+                    <a href="login.html">Sign In / Register</a>
+                    <a href="user/home.html">Student Portal</a>
+                    <a href="admin/dashboard.html">Facility Operations Portal</a>
+                </div>
+                <div class="footer-col">
+                    <h4>CAMPUS</h4>
+                    <a href="https://www.umn.ac.id" target="_blank" rel="noopener">Universitas Multimedia Nusantara</a>
+                    <a href="https://maps.google.com" target="_blank" rel="noopener">Campus Directions</a>
+                    <a href="admin/maintenance.html">Maintenance Logs</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AERIS. Universitas Multimedia Nusantara. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/qr.js"></script>
+    <script>
+        // Inject mascots
+        document.getElementById('nav-mascot').innerHTML = window.mascotSVG;
+        document.getElementById('hero-mascot').innerHTML = window.mascotSVG;
+        document.getElementById('cta-mascot').innerHTML = window.mascotSVG;
+        document.getElementById('footer-mascot').innerHTML = window.mascotSVG;
+
+        // Render Live Room Catalog
+        let selectedBuilding = 'All';
+
+        function renderCatalog() {
+            const container = document.getElementById('catalog-rooms-container');
+            if (!container) return;
+
+            const filtered = window.spaces.filter(s => {
+                if (selectedBuilding !== 'All' && s.building !== selectedBuilding) return false;
+                return true;
+            });
+
+            container.innerHTML = filtered.map(room => {
+                const health = window.calculateRoomHealth(room);
+                const imgSrc = window.resolveAssetUrl(room.image);
+
+                return `
+                <div class="room-catalog-card" onclick="openRoomPage('${room.id}')">
+                    <div class="rc-img">
+                        <img src="${imgSrc}" alt="${room.name}" onerror="this.src='assets/library.jpg'">
+                        <span class="rc-health-tag ${health.badgeClass}">${health.label}</span>
+                        <span class="rc-qr-badge">📷 ${room.roomCode}</span>
+                    </div>
+                    <div class="rc-body">
+                        <div class="rc-name">${room.name}</div>
+                        <div class="rc-sub">${room.building} · Floor ${room.floor} · ${room.roomType}</div>
+                        <div class="rc-metrics">
+                            <span>🌡️ ${room.temperature.toFixed(1)}°C</span>
+                            <span>💧 ${room.humidity}%</span>
+                            <span>🌬️ ${room.co2} ppm</span>
+                        </div>
+                        <div class="rc-footer">
+                            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">IEQ Score: <b style="color:var(--text-main);">${room.comfortScore}%</b></span>
+                            <button class="btn btn-primary btn-sm" style="padding:4px 12px; font-size:0.75rem;">View Space →</button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // Update KPI counters
+            const kpiRooms = document.getElementById('kpi-rooms');
+            if (kpiRooms) kpiRooms.textContent = window.spaces.length + ' Rooms';
+        }
+
+        function filterCatalog(bldg, btn) {
+            selectedBuilding = bldg;
+            document.querySelectorAll('.catalog-chips .chip').forEach(c => c.classList.remove('selected'));
+            btn.classList.add('selected');
+            renderCatalog();
+        }
+
+        function openRoomPage(id) {
+            window.location.href = `user/room.html?id=${id}`;
+        }
+
+        // QR Modal Logic
+        function openQrScanModal() {
+            document.getElementById('qr-scan-modal').classList.remove('hidden');
+            document.getElementById('qr-code-input').focus();
+        }
+
+        function closeQrScanModal() {
+            document.getElementById('qr-scan-modal').classList.add('hidden');
+        }
+
+        function fillQrDemo(code) {
+            document.getElementById('qr-code-input').value = code;
+            submitQrLookup();
+        }
+
+        function submitQrLookup() {
+            const raw = document.getElementById('qr-code-input').value.trim();
+            if (!raw) return;
+            
+            // Search matching room by ID, roomCode, or QR code
+            const match = window.spaces.find(s => 
+                s.id.toLowerCase() === raw.toLowerCase() || 
+                (s.roomCode && s.roomCode.toLowerCase() === raw.toLowerCase()) ||
+                (s.qrCode && s.qrCode.toLowerCase() === raw.toLowerCase()) ||
+                s.name.toLowerCase().includes(raw.toLowerCase())
+            );
+
+            if (match) {
+                window.location.href = `user/room.html?id=${match.id}`;
+            } else {
+                alert(`No registered room matches "${raw}". Try selecting one of the demo rooms below.`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCatalog();
+        });
+
+        window.addEventListener('storage_spaces_updated', renderCatalog);
+        window.addEventListener('storage_reports_updated', renderCatalog);
+    </script>
+</body>
+</html>

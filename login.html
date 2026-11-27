@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Portal | AERIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <script src="js/theme.js"></script>
+    <style>
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background: linear-gradient(145deg, var(--bg-color), var(--soft-lavender)); 
+            padding: 20px;
+        }
+        .login-wrapper {
+            width: 100%;
+            max-width: 440px;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-body);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        .back-home:hover {
+            color: var(--primary-blue);
+            transform: translateX(-3px);
+        }
+        .login-card { 
+            background: var(--white); 
+            padding: 36px 32px; 
+            border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow-lg); 
+            text-align: center; 
+            border: 1px solid var(--soft-lavender); 
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-mascot {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 12px;
+        }
+        .login-card h1 { 
+            font-size: 1.85rem; 
+            color: var(--primary-blue); 
+            margin-bottom: 4px; 
+            letter-spacing: 1.5px; 
+        }
+        .login-card p.subtitle { 
+            color: var(--text-muted); 
+            margin-bottom: 24px; 
+            font-size: 0.875rem; 
+        }
+        /* Auth Mode Switcher */
+        .auth-tabs {
+            display: flex;
+            background: var(--bg-color);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            margin-bottom: 24px;
+            border: 1px solid var(--soft-lavender);
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 9px 12px;
+            border-radius: var(--radius-pill);
+            border: none;
+            background: transparent;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .auth-tab.active {
+            background: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+        .error-msg { 
+            color: var(--status-poor); 
+            background: rgba(240, 107, 103, 0.12);
+            border: 1px solid var(--status-poor);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-size: 0.8125rem; 
+            margin-bottom: 18px; 
+            font-weight: 600; 
+            display: none; 
+            text-align: left;
+        }
+        .success-msg {
+            color: var(--status-optimal);
+            background: rgba(95, 203, 130, 0.12);
+            border: 1px solid var(--status-optimal);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-size: 0.8125rem;
+            margin-bottom: 18px;
+            font-weight: 600;
+            display: none;
+            text-align: left;
+        }
+        .demo-bar {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--soft-lavender);
+            text-align: center;
+        }
+        .demo-bar p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+        .demo-chips {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .demo-chip {
+            background: var(--bg-color);
+            border: 1px solid var(--soft-lavender);
+            border-radius: var(--radius-pill);
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .demo-chip:hover {
+            border-color: var(--primary-blue);
+            background: var(--soft-lavender);
+            color: var(--primary-blue);
+        }
+        .auth-note {
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <a href="index.html" class="back-home">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Back to Public Campus Overview
+        </a>
+
+        <div class="login-card">
+            <div class="auth-mascot" id="auth-mascot"></div>
+            <h1>AERIS</h1>
+            <p class="subtitle">Campus Facility & Environmental Intelligence</p>
+
+            <!-- Mode Switcher -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</button>
+                <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Create Account</button>
+            </div>
+            
+            <div class="error-msg" id="auth-error"></div>
+            <div class="success-msg" id="auth-success"></div>
+            
+            <!-- Login Form -->
+            <form id="form-login" onsubmit="event.preventDefault(); handleLogin();">
+                <div class="form-group">
+                    <label>Username / Student ID</label>
+                    <input type="text" id="username" class="form-control" placeholder="e.g. student or admin" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" id="btn-login-submit" class="btn btn-primary full-width mt-4">
+                    Sign In to AERIS
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="form-register" class="hidden" onsubmit="event.preventDefault(); handleRegister();">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg-name" class="form-control" placeholder="e.g. Budi Santoso" required>
+                </div>
+                <div class="form-group">
+                    <label>Username / NIM</label>
+                    <input type="text" id="reg-username" class="form-control" placeholder="e.g. 0000018921" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>Account Role</label>
+                    <select id="reg-role" class="form-control">
+                        <option value="student">Student / Campus Visitor</option>
+                        <option value="admin">Facility Operations Administrator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Password (Salted PBKDF2)</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="At least 4 characters" required autocomplete="new-password">
+                </div>
+                
+                <button type="submit" id="btn-reg-submit" class="btn btn-primary full-width mt-4">
+                    Create Secured Account
+                </button>
+            </form>
+            
+            <!-- One-Click Demo Accounts -->
+            <div class="demo-bar">
+                <p>Fast Demo Accounts (Pre-Hashed)</p>
+                <div class="demo-chips">
+                    <button type="button" class="demo-chip" onclick="quickFill('student', 'password')">🎓 Student Demo</button>
+                    <button type="button" class="demo-chip" onclick="quickFill('admin', 'password')">🏢 Admin Demo</button>
+                </div>
+            </div>
+
+            <div class="auth-note">
+                Secured with PBKDF2 Web Crypto standard. No plain-text passwords stored.
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Inject mascot
+        document.getElementById('auth-mascot').innerHTML = window.mascotSVG;
+
+        // If already logged in, route immediately
+        const session = JSON.parse(localStorage.getItem('aeris_session'));
+        if (session) {
+            if (session.role === 'student') window.location.href = 'user/home.html';
+            if (session.role === 'admin') window.location.href = 'admin/dashboard.html';
+        }
+
+        function switchAuthTab(tab) {
+            const tabLogin = document.getElementById('tab-login');
+            const tabReg = document.getElementById('tab-register');
+            const formLogin = document.getElementById('form-login');
+            const formReg = document.getElementById('form-register');
+            const err = document.getElementById('auth-error');
+            const succ = document.getElementById('auth-success');
+            err.style.display = 'none';
+            succ.style.display = 'none';
+
+            if (tab === 'login') {
+                tabLogin.classList.add('active');
+                tabReg.classList.remove('active');
+                formLogin.classList.remove('hidden');
+                formReg.classList.add('hidden');
+            } else {
+                tabReg.classList.add('active');
+                tabLogin.classList.remove('active');
+                formReg.classList.remove('hidden');
+                formLogin.classList.add('hidden');
+            }
+        }
+
+        function quickFill(u, p) {
+            switchAuthTab('login');
+            document.getElementById('username').value = u;
+            document.getElementById('password').value = p;
+            handleLogin();
+        }
+
+        async function handleLogin() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const err = document.getElementById('auth-error');
+            const btn = document.getElementById('btn-login-submit');
+            
+            err.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Verifying Hash...';
+
+            try {
+                const res = await login(u, p);
+                if (!res || !res.success) {
+                    err.textContent = (res && res.message) ? res.message : 'Invalid credentials. Please verify your username and password.';
+                    err.style.display = 'block';
+                    btn.disabled = false;
+                    btn.textContent = 'Sign In to AERIS';
+                }
+            } catch(e) {
+                err.textContent = 'Authentication error. Please try again.';
+                err.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Sign In to AERIS';
+            }
+        }
+
+        async function handleRegister() {
+            const name = document.getElementById('reg-name').value;
+            const u = document.getElementById('reg-username').value;
+            const role = document.getElementById('reg-role').value;
+            const p = document.getElementById('reg-password').value;
+            const err = document.getElementById('auth-error');
+            const btn = document.getElementById('btn-reg-submit');
+
+            err.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Generating Salt & Hash...';
+
+            try {
+                const res = await register(u, p, name, role);
+                if (!res || !res.success) {
+                    err.textContent = res ? res.message : 'Registration failed.';
+                    err.style.display = 'block';
+                    btn.disabled = false;
+                    btn.textContent = 'Create Secured Account';
+                }
+            } catch(e) {
+                err.textContent = 'Registration error. Please try again.';
+                err.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Create Secured Account';
+            }
+        }
+    </script>
+</body>
+</html>
